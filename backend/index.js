@@ -9,4 +9,6 @@ app.use(express.json()) ;
 
 app.use("/api/v1",mainRouter) ;
 
-app.listen(3001) ;
+app.listen(3001 , ()=>{
+    console.log("Server is Running at 3001") ;
+}) ;
