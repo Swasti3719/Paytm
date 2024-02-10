@@ -32,11 +32,14 @@ export const Signup = () =>{
                 }}placeholder={"12345678"} label = {"Password"} />
                 <div className="pt-4">
                     <Button onClick = {()=>{
-                        axios.post("https://localhost:3001/api/v1/user/signup" , {
-                            userName,
-                            firstName,
-                            lastName,
-                            password
+                        fetch("http://localhost:3001/api/v1/user/signup",{
+                            method :"POST" ,
+                            body : JSON.stringify({
+                                userName ,
+                                firstName ,
+                                lastName ,
+                                password
+                            })
                         })
                     }}label = {"Sign up"}/>
                 </div> 
