@@ -9,7 +9,7 @@ const { authMiddleware } = require("../middleware") ;
 router.use(express.json()) ;
 
 const signUpBody = zod.object({
-    username : zod.string().email() ,
+    userName : zod.string().email() ,
     firstName : zod.string() ,
     lastName : zod.string() ,
     password : zod.string()  
