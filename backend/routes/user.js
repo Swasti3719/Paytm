@@ -28,7 +28,7 @@ router.post("/signup" , async (req,res) => {
         })
     }
     const existingUser = await User.findOne({
-        username : req.body.username 
+        username : req.body.userName 
     })
     if(existingUser){
         return res.status(411).json({
@@ -36,7 +36,7 @@ router.post("/signup" , async (req,res) => {
         })
     }
     const user = await User.create({
-        username : req.body.username ,
+        username : req.body.userName ,
         password : req.body.password ,
         firstName : req.body.firstName ,
         lastName : req.body.lastName 
@@ -66,7 +66,7 @@ router.post("/signin" , async (req,res) => {
         })
     }
     const user = await User.findOne({
-        username : req.body.username ,
+        username : req.body.userName ,
         password : req.body.password 
     }) ;
     if(user){

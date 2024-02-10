@@ -32,14 +32,20 @@ export const Signup = () =>{
                 }}placeholder={"12345678"} label = {"Password"} />
                 <div className="pt-4">
                     <Button onClick = {()=>{
+                        const requestBody = JSON.stringify({
+                            "userName" : userName ,
+                            "firstName" : firstName ,
+                            "lastName" : lastName ,
+                            "password" : password
+                        }) ;
                         fetch("http://localhost:3001/api/v1/user/signup",{
                             method :"POST" ,
-                            body : JSON.stringify({
-                                userName ,
-                                firstName ,
-                                lastName ,
-                                password
-                            })
+                            headers : new Headers(
+                             {
+                                'Content-Type': 'application/json' ,
+                                'Content-Length': String(new TextEncoder().encode(requestBody).length),
+                            }
+                            ) ,
                         })
                     }}label = {"Sign up"}/>
                 </div> 
