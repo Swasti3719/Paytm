@@ -31,8 +31,8 @@ export const Signup = () =>{
                     setPassword(e.target.value) ;
                 }}placeholder={"12345678"} label = {"Password"} />
                 <div className="pt-4">
-                    <Button onClick = {()=>{
-                        fetch("http://localhost:3001/api/v1/user/signup",{
+                    <Button onClick = {async ()=>{
+                        const response  = await fetch("http://localhost:3001/api/v1/user/signup",{
                             method :"POST" ,
                             body : JSON.stringify({
                                 userName ,
@@ -41,6 +41,7 @@ export const Signup = () =>{
                                 password
                             })
                         })
+                        console.log(response) ;
                     }}label = {"Sign up"}/>
                 </div> 
                 <BottomWarming label = {"Already Have an Account"} buttonText={"Sign in"} to={"/signin"}/>
