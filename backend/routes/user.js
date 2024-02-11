@@ -5,6 +5,7 @@ const jwt = require("jsonwebtoken") ;
 const { JWT_SECRET }  =  require("../config") ;
 const { User , Account } = require("../db") ;
 const { authMiddleware } = require("../middleware") ;
+const { fromZodError } = require("zod-validation-error");
 
 router.use(express.json()) ;
 
@@ -21,10 +22,17 @@ const signInBody = zod.object({
 })
 
 router.post("/signup" , async (req,res) => {
+    try{
+        signUpBody.parse(req.body) ;
+    }catch(err){
+        const validationError = fromZodError(err) ;
+        console.log(validationError) ;
+    }
     const { success } = signUpBody.safeParse(req.body) ;
+
     if(!success){
         return res.status(411).json({
-            message : "Incorrect Inputs" 
+            message : "Incorrect Inputs" ,
         })
     }
     const existingUser = await User.findOne({
