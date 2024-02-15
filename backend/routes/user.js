@@ -9,7 +9,7 @@ const { authMiddleware } = require("../middleware") ;
 router.use(express.json()) ;
 
 const signUpBody = zod.object({
-    userName : zod.string().email() ,
+    username : zod.string().email() ,
     firstName : zod.string() ,
     lastName : zod.string() ,
     password : zod.string()  
@@ -22,6 +22,14 @@ const signInBody = zod.object({
 
 router.post("/signup" , async (req,res) => {
     const { success } = signUpBody.safeParse(req.body) ;
+
+
+    console.log(req.body.username) ;
+    console.log(req.body.firstName) ;
+    console.log(req.body.lastName) ;
+    console.log(req.body.password) ;
+
+
     if(!success){
 
         return res.status(411).json({
