@@ -35,10 +35,10 @@ export const Signup = () =>{
                         const response  = await fetch("http://localhost:3001/api/v1/user/signup",{
                             method :"POST" ,
                             body : JSON.stringify({
-                                userName ,
-                                firstName ,
-                                lastName ,
-                                password
+                                userName : userName,
+                                firstName : firstName,
+                                lastName : lastName,
+                                password : password
                             })
                         })
                         console.log(response) ;
