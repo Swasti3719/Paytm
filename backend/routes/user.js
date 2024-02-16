@@ -5,6 +5,8 @@ const jwt = require("jsonwebtoken") ;
 const { JWT_SECRET }  =  require("../config") ;
 const { User , Account } = require("../db") ;
 const { authMiddleware } = require("../middleware") ;
+const bodyParser = require("body-parser") ;
+router.use(bodyParser.json()) ;
 
 router.use(express.json()) ;
 
