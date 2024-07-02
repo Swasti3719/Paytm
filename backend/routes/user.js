@@ -23,21 +23,26 @@ const signInBody = zod.object({
 })
 
 router.post("/signup" , async (req,res) => {
-    const { success } = signUpBody.safeParse(req.body) ;
+    const { success , error } = signUpBody.safeParse(req.body) ;
 
 
-    console.log(req.body.username) ;
-    console.log(req.body.firstName) ;
-    console.log(req.body.lastName) ;
-    console.log(req.body.password) ;
+    // console.log(req.body.username) ;
+    // console.log(req.body.firstName) ;
+    // console.log(req.body.lastName) ;
+    // console.log(req.body.password) ;
 
 
-    if(!success){
-
-        return res.status(411).json({
-            message : "Incorrect Inputs"  
-        })
+    if (!success) {
+        console.log(error);
+        return res.status(400).json({
+            message: "Invalid input",
+            errors: error.errors.map(err => ({
+                path: err.path,
+                message: err.message
+            }))
+        });
     }
+
     const existingUser = await User.findOne({
         username : req.body.username 
     })
@@ -53,10 +58,10 @@ router.post("/signup" , async (req,res) => {
         lastName : req.body.lastName 
     })
     const userId = user._id ;
-
+    const balance = 1+Math.random()*10000 ;
     await Account.create({
         userId ,
-        balance : 1+Math.random()*10000 
+        balance : balance
     }) ;
 
     const token = jwt.sign({
@@ -65,17 +70,18 @@ router.post("/signup" , async (req,res) => {
 
     res.json({
         message : "User Created Successfully" , 
-        token : token 
+        token : token ,
+        balance : balance   
     })
 })
 
 router.post("/signin" , async (req,res) => {
     const { success } = signInBody.safeParse(req.body) ;
-    if(!success){
-        return res.status(411).json({
-            message : "Incorrect Inputs" 
-        })
-    }
+    // if(!success){
+    //     return res.status(411).json({
+    //         message : "Incorrect Inputs" 
+    //     })
+    // }
     const user = await User.findOne({
         username : req.body.username ,
         password : req.body.password 
@@ -84,8 +90,16 @@ router.post("/signin" , async (req,res) => {
         const token = jwt.sign({
             userId : user._id 
         },JWT_SECRET) ;
+        console.log(user._id) ;
+        const account =await Account.findOne({userId : user._id}) ;
+        // console.log(account) ;
+        // console.log(account) ;
+        const balance = account.balance ;
+        // console.log(balance) ;
         res.json({
-            token : token 
+            token : token ,
+            balance : balance ,
+            message : "signed in successfully"
         })
         return ;
     }
@@ -136,6 +150,10 @@ router.get("/bulk" , authMiddleware , async(req,res)=> {
             _id : user._id  
         }))
     })
+})
+
+router.get("/balance",authMiddleware,async(req,res)=>{
+
 })
 
 
